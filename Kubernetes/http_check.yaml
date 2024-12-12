@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: http_check-configmap
+  name: http-check-configmap
 data:
   URLS: "https://httpstat.us/503,https://httpstat.us/200"
   TIMEOUT: "2"
@@ -11,47 +11,47 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: http_check-deploy
+  name: http-check-deploy
   labels:
-    app: http_check-python
+    app: http-check-python
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: http_check
+      app: http-check
   template:
     metadata:
       labels:
-        app: http_check
+        app: http-check
     spec:
       containers:
-      - name: http_check
-        image: himadriganguly/sample_external_url
+      - name: http-check
+        image: nnachkov/infratask
         env:
         - name: URLS
           valueFrom:
             configMapKeyRef:
-              name: http_check-configmap
+              name: http-check-configmap
               key: URLS
         - name: TIMEOUT
           valueFrom:
             configMapKeyRef:
-              name: http_check-configmap
+              name: http-check-configmap
               key: TIMEOUT
         - name: PORT
           valueFrom:
             configMapKeyRef:
-              name: http_check-configmap
+              name: http-check-configmap
               key: PORT
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: http_check-service
+  name: http-check-service
 spec:
   selector:
-    app: http_check
+    app: http-check
   ports:
     - protocol: TCP
       port: 80
