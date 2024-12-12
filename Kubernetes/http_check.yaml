@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
       - name: http-check
-        image: nnachkov/infratask:version1.0
+        image: https://hub.docker.com/r/nnachkov/infratask:version1.0
         env:
         - name: URLS
           valueFrom:
