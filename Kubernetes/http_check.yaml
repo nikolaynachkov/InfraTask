@@ -13,7 +13,7 @@ kind: Deployment
 metadata:
   name: http-check-deploy
   labels:
-    app: http-check-python
+    app: http-check
 spec:
   replicas: 3
   selector:
