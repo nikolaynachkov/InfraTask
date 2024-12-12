@@ -25,8 +25,8 @@ spec:
         app: http-check
     spec:
       containers:
-      - name: http-check
-        image: https://hub.docker.com/r/nnachkov/infratask:version1.0
+      - name: minikube
+        image: nnachkov/infratask:version1.0
         env:
         - name: URLS
           valueFrom:
