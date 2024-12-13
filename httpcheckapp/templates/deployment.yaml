@@ -27,13 +27,6 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      env:
-      - name: URLS
-        value: {{ .Values.env.URLS }}
-      - name: TIMEOUT
-        value: {{ .Values.env.TIMEOUT }}
-      - name: PORT
-        value: {{ .Values.env.PORT }}
       serviceAccountName: {{ include "httpcheckapp.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}

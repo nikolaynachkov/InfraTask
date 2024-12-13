@@ -79,9 +79,11 @@ Prometheus style metrics will be displayed:
 ![Prometheus_metrics](https://github.com/user-attachments/assets/f04ab2f0-b78a-4406-b552-ecd47724c27f)
 
 7. Exit the application in powershell
+
 ```
 Ctrl + c
 ```
+
 You will a message saying that the application is shutting down.
 
 <img width="400" alt="appshutdown" src="https://github.com/user-attachments/assets/7cab5f86-7fdb-4d45-b369-bfa6f91682a4" />
@@ -113,12 +115,12 @@ To see the metrics, browser to [http://localhost:8090/metrics](http://localhost:
 
 
 
-3. Login to your docker registry (create account if not having one), create new repository on **DockerHub** and push the image.
+3. Login to your docker registry (create account if not having one), create new repository on **DockerHub** and push the image. (USERNAME is the one used for Docker registration)
 
 ```
 docker login
-docker tag infratask:v1.0 [USERNAME]/infratask:v1.0
-docker push [USERNAME]/infratask:v1.0
+docker tag infratask:v1.0 USERNAME/infratask:v1.0
+docker push USERNAME/infratask:v1.0
 ```
 
 
@@ -167,159 +169,59 @@ kubectl get all -n sample-external-url
 4. Check if the application is working
 
 ```
-kubectl port-forward service/sample-external-url-service 8080:80 -n sample-external-url
+kubectl port-forward service/http-check-service 8090:8090 -n http-check
 ```
 
 Browse to [http://localhost:8090](http://localhost:8090)
 
 To see the metrics, browse to [http://localhost:8090/metrics](http://localhost:8090/metrics)
 
-## Deploy Prometheus
 
-1. Get Repo Info
-
-```
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo add kube-state-metrics https://kubernetes.github.io/kube-state-metrics
-helm repo update
-```
-
-2. Install Chart
+6. When you verify the image is working, stop kubectl port-forward and delete the newly created namespace.
 
 ```
-helm install prometheus prometheus-community/prometheus
+Ctrl + c
+kubectl delete ns http-check
 ```
 
-**Note:-** [https://artifacthub.io/packages/helm/prometheus-community/prometheus](https://artifacthub.io/packages/helm/prometheus-community/prometheus)
+## Use Helm chart to deploy the container on the cluster
 
-## Deploy Grafana
+1. Download and install Helm
 
-1. Get Repo Info
+Download link: [https://github.com/helm/helm/releases](https://github.com/helm/helm/releases)
 
-```
-helm repo add grafana https://grafana.github.io/helm-charts
-helm repo update
-```
+Extract Helm binary into C:\Helm and add it to SYSTEM wide PATH variable. In PowerShell navigate to InfraTask folder.
 
-2. Install Chart
+2. Helm chart is already created in .\httpcheckapp, you just need to install it and check the status
 
 ```
-helm install grafana grafana/grafana
+helm install initial .\httpcheckapp --namespace http-check-helmchart --create-namespace --wait
+kubectl get all -n http-check-helmchart
 ```
 
-**Note:-** [https://github.com/grafana/helm-charts/tree/main/charts/grafana](https://github.com/grafana/helm-charts/tree/main/charts/grafana)
-
-3. Get the login username and password
+3. When you verify the pods are running, execute kubectl port-forward
 
 ```
-kubectl get secrets grafana -o jsonpath='{.data.admin-password}' | base64 --decode | cut -d "%" -f1
-kubectl get secrets grafana -o jsonpath='{.data.admin-user}' | base64 --decode | cut -d "%" -f1
+kubectl port-forward service/initial-httpcheckapp 8090:8090 -n http-check-helmchart
 ```
 
-## Update Prometheus Config To Scrape Metrics From The Application
+Browse to [http://localhost:8090](http://localhost:8090)
 
-1. Update configmap for Prometheus
+To see the metrics, browse to [http://localhost:8090/metrics](http://localhost:8090/metrics)
 
-```
-kubectl edit cm/prometheus-server
-```
-
-2. Add the following config under **scrape_configs**
+4. Stop port-forward, uninstall Helm chart and delete the namespace.
 
 ```
-- job_name: 'sample_external'
-      static_configs:
-      - targets: ['CLUSTER-IP:80']
-```
-**Note:-** Replace **CLUSTER-IP** with the ip that we noted down earlier. In my case it will be **10.104.174.69**.
-
-## Port Forward Prometheus And Grafana
-
-1. Port forward Prometheus
-
-```
-kubectl port-forward service/prometheus-server 9090:80
+Ctrl + c
+helm uninstall initial .\httpcheckapp --namespace http-check-helmchart
+kubectl delete ns http-check-helmchart
 ```
 
-2. Port forward Grafana
+6. Delete minikube cluster from local system
 
 ```
-kubectl port-forward service/grafana 3000:80
+minikube delete
 ```
 
-3. Open Prometheus
+![minikube delete](https://github.com/user-attachments/assets/c0365e90-40a9-4159-8ebe-85649beed081)
 
-Open your browser and point to [http://localhost:9090](http://localhost:9090) you will see **Prometheus UI**.
-
-4. Check Prometheus config
-
-Open your browser and point to [http://localhost:9090](http://localhost:9090) you will see **Prometheus UI**. Go to **Status** > **Configuration** and you can see that your configuration has been added under **scrape_configs:**.
-
-![Prometheus Configuration](https://raw.githubusercontent.com/himadriganguly/sample_external_url/main/screenshots/prometheus-config.png "Prometheus Configuration")
-
-5. Check **Prometheus** metrics collected from our **Application**
-
-![Prometheus External URL Response Milliseconds](https://raw.githubusercontent.com/himadriganguly/sample_external_url/main/screenshots/prometheus-external-url-response-ms-table.png "Prometheus External URL Response Milliseconds")
-
-![Prometheus External URL Response Milliseconds](https://raw.githubusercontent.com/himadriganguly/sample_external_url/main/screenshots/prometheus-external-url-response-ms.png "Prometheus External URL Response Milliseconds")
-
-![Prometheus External URL Up](https://raw.githubusercontent.com/himadriganguly/sample_external_url/main/screenshots/prometheus-external-url-up-table.png "Prometheus External URL Up")
-
-![Prometheus External URL Up](https://raw.githubusercontent.com/himadriganguly/sample_external_url/main/screenshots/prometheus-external-url-up.png "Prometheus External URL Up")
-
-6. Open Grafana
-
-Open your browser and point to [http://localhost:3000](http://localhost:3000) you will see **Grafana Login**.
-
-Enter the **username** and **password** we already collected to login.
-
-## Add Prometheus Data Source To Grafana
-
-1. Open Grafana
-
-Open your browser and point to [http://localhost:3000](http://localhost:3000) you will see **Grafana Login**.
-
-Enter the **username** and **password** we already collected to login.
-
-2. Click on **Configuration** > **Data Sources**
-
-3. Click on **Add data source**
-
-![Grafana Add Data Source](https://raw.githubusercontent.com/himadriganguly/sample_external_url/main/screenshots/grafan-configuration.png "Grafana Add Data Source")
-
-4. Select **Prometheus** as the data source
-
-![Grafana Add Data Source Prometheus](https://raw.githubusercontent.com/himadriganguly/sample_external_url/main/screenshots/grafan-configuration-add-data-source.png "Grafana Add Data Source Prometheus")
-
-5. Check Prometheus cluster ip
-
-```
-kubectl get svc
-```
-
-**Note:-** Write down the **ClusterIP** for **prometheus-server**
-
-![Kubectl Get Prometheus Cluster IP](https://raw.githubusercontent.com/himadriganguly/sample_external_url/main/screenshots/kubectl-get-svc.png "Kubectl Get Prometheus Cluster IP")
-
-6. Add the **ClusterIP** as the **Prometheus** url
-
-![Grafana Add Data Source Prometheus IP](https://raw.githubusercontent.com/himadriganguly/sample_external_url/main/screenshots/grafan-configuration-add-data-source-prometheus.png "Grafana Add Data Source Prometheus IP")
-
-7. Click **Save & Test**
-
-
-## Import Grafana Dashboard
-
-1. Click on **Create** > **Import**
-
-2. Click on **Upload JSON file** and select the file from the **grafana** folder within this repository.
-
-![Import Grafan Dashboard Step1](https://raw.githubusercontent.com/himadriganguly/sample_external_url/main/screenshots/grafan-import-dashboard1.png "Import Grafan Dashboard Step1")
-
-![Import Grafan Dashboard Step2](https://raw.githubusercontent.com/himadriganguly/sample_external_url/main/screenshots/grafan-import-dashboard2.png "Import Grafan Dashboard Step2")
-
-3. Click on **Import** button it will create the dashboard with the **Prometheus** metrics.
-
-![Import Grafan Dashboard Step3](https://raw.githubusercontent.com/himadriganguly/sample_external_url/main/screenshots/grafan-import-dashboard3.png "Import Grafan Dashboard Step3")
-
-test2
