@@ -15,69 +15,53 @@ Test URLs & metrics:-
 
 ## Testin application on Windows PC before conteinerization
 
-0. Download and Install Python from the link
+0. Download and install Python from the link
 **Python 3.13.1 used for testing**
 ```
 [https://www.python.org/downloads/release/python-3131/](https://www.python.org/downloads/release/python-3131/)
 ```
 
-1. Clone git repository and enter into the folder
+1. Clone git and enter the folder
 ```
 git clone https://github.com/nikolaynachkov/InfraTask.git
-cd \InfraTask\http_check\
+cd \InfraTask\
 ```
 
 2. Verify installed Python version
 
-
+![python --version](https://github.com/user-attachments/assets/db0bf179-61a3-44dc-9fe1-099590cb3f95)
 
 3. Create and activate a virtual environment
 
-`Linux`
-
 ```
-python -m venv venv
-source venv/bin/activate
-```
-
-`Windows`
-
-```
-python -m venv venv
-.\venv\Scripts\activate.bat
+python -m venv C:\temp\venv\
+C:\temp\venv\Scripts\activate.bat
 ```
 
 2. Install the required packages inside the environment
 
 ```
-pip install -r src/requirements-dev.txt
+pip install -r .\RequiredModules\modules.txt
 ```
 
-3. Run unit-test of the application using **pytest**
 
+
+4. Set environment variables for the application
 ```
-pytest
-```
-
-4. Export environment variables for the application
-
-`Linux`
-
-```
-export URLS='https://httpstat.us/503','https://httpstat.us/200'
-export TIMEOUT=2
-export PORT=8080
+[Environment]::SetEnvironmentVariable("TIMEOUT", "2", "MACHINE")
+[Environment]::SetEnvironmentVariable("PORT", "8090", "MACHINE")
+[Environment]::SetEnvironmentVariable("URLS", "https://httpstat.us/503,https://httpstat.us/200", "MACHINE")
 ```
 
-`Windows`
-
-[https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/set_1](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/set_1)
 
 5. Run the application
 
 ```
-python src/app.py
+python .\http_check\run.py
 ```
+
+You will see the following output:
+
 
 6. Check the application
 Open your browser and point to [http://localhost:8080](http://localhost:8080) you will see a text message.
