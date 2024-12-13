@@ -66,11 +66,13 @@ You will see the following output:
 6. Check the application
 
 Point your browser to [http://localhost:8090](http://localhost:8090)
+
 You will see:
 
 ![applicationisrunning](https://github.com/user-attachments/assets/91059856-aa61-4fd5-a5cb-a4b637223c69)
 
 Point your browser to [http://localhost:8090/metrics](http://localhost:8090/metrics)
+
 Prometheus style metrics will be displayed:
 
 ![Prometheus_metrics](https://github.com/user-attachments/assets/f04ab2f0-b78a-4406-b552-ecd47724c27f)
