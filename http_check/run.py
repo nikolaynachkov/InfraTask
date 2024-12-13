@@ -45,7 +45,7 @@ def my_app(environ, start_fn):
             return metrics_app(environ, start_fn)
 
         start_fn('200 OK', [])
-        return [b'URL is live!']
+        return [b'Application is running!!!']
     except Exception as err:
         raise Exception(err)
 
@@ -60,7 +60,7 @@ if __name__ == '__main__':
         print("Serving on port {}".format(port))
         httpd.serve_forever()
     except KeyboardInterrupt as err:
-        print("Shuting Down App. See you soon!")
+        print("Application is shutting down!")
         exit(0)
     except Exception as err:
         print("Error ocurred: ", err)
