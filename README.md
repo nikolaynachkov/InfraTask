@@ -27,7 +27,7 @@ Download from:[https://www.python.org/downloads/release/python-3131/](https://ww
 ![python --version](https://github.com/user-attachments/assets/db0bf179-61a3-44dc-9fe1-099590cb3f95)
 
 
-3. Clone git and enter the local repo folder
+3. Clone or Download the repo, extract it in "InfraTask" folder and enter that folder
 ```
 git clone https://github.com/nikolaynachkov/InfraTask.git
 cd \InfraTask\
