@@ -161,7 +161,7 @@ kubectl apply -f Kubernetes/http_check.yaml -n http-check
 3. Display all the components deployed
 
 ```
-kubectl get all -n sample-external-url
+kubectl get all -n http-check
 ```
 
 ![kubectl get all -n http-check](https://github.com/user-attachments/assets/50a2fd3e-7ca4-4ce1-a94f-4caf6a9906f2)
