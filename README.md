@@ -17,9 +17,9 @@ Test URLs & metrics:-
 
 0. Download and install Python from the link
 **Python 3.13.1 used for testing**
-```
+
 [https://www.python.org/downloads/release/python-3131/](https://www.python.org/downloads/release/python-3131/)
-```
+
 
 1. Clone git and enter the folder
 ```
@@ -62,12 +62,16 @@ python .\http_check\run.py
 
 You will see the following output:
 
+![python-run py](https://github.com/user-attachments/assets/f4a83a83-332f-4e26-89be-73bebc3ed586)
+
 
 6. Check the application
-Open your browser and point to [http://localhost:8080](http://localhost:8080) you will see a text message.
-To see the metrics point your browser to [http://localhost:8080/metrics](http://localhost:8080/metrics)
+Open your browser and point to [http://localhost:8090](http://localhost:8090) you will see:
 
-7. Exit the application
+
+To see the metrics point your browser to [http://localhost:8090/metrics](http://localhost:8090/metrics)
+
+8. Exit the application
 ```
 Ctrl + c
 ```
