@@ -84,8 +84,9 @@ You will see a good bye message.
 
 <img width="400" alt="appshutdown" src="https://github.com/user-attachments/assets/7cab5f86-7fdb-4d45-b369-bfa6f91682a4" />
 
-## Building The Container Image For Production
+## Build Docker Image and upload it to a dockerhub repository
 **Docker is required**
+[https://docs.docker.com/desktop/setup/install/windows-install/](https://docs.docker.com/desktop/setup/install/windows-install/)
 
 1. Build the Docker image
 
