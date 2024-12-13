@@ -1,4 +1,4 @@
-## Projct Details and Overview
+## Project Details and Overview
 This is a **Python** application that is checking the availability and response time of external URLs and producing Prometheus format metrics at **http://appurl/metrics**. 
 The steps below outline how the application can be executed on Windows PC in a minikube K8s single node cluster, locally using a docker image from a public dockerhub repository. 
 Dockerfile exist to ease the conteinerization of the application.
