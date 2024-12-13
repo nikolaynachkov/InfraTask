@@ -107,7 +107,7 @@ docker build -t infratask:v1.0 .
 ```
 docker run -p 8090:8090 --env-file .\env_var --name temp-container infratask
 ```
-Browser  [http://localhost:8090](http://localhost:8090)
+Browse to  [http://localhost:8090](http://localhost:8090)
 
 To see the metrics, browser to [http://localhost:8090/metrics](http://localhost:8090/metrics)
 
