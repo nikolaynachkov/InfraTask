@@ -11,18 +11,13 @@ image:
   # This sets the pull policy for images.
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "version1.0"
+  tag: "v1.0"
 
 # This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
 # This is to override the chart name.
 nameOverride: ""
 fullnameOverride: ""
-
-env:
-  URLS: "https://httpstat.us/503,https://httpstat.us/200"
-  TIMEOUT: 2
-  PORT: 8090
 
 #This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
 serviceAccount:
@@ -59,7 +54,7 @@ service:
   # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
   type: NodePort
   # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
-  port: 80
+  port: 8090
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
@@ -91,16 +86,16 @@ resources: {}
   #   memory: 128Mi
 
 # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
-#livenessProbe:
-#  httpGet:
-#    path: /
-#    port: http
-#  initialDelaySeconds: 180
-#readinessProbe:
-#  httpGet:
-#    path: /
-#    port: http
-#  initialDelaySeconds: 180
+livenessProbe:
+  httpGet:
+    path: /
+    port: 8090
+  initialDelaySeconds: 180
+readinessProbe:
+  httpGet:
+    path: /
+    port: 8090
+  initialDelaySeconds: 180
 
 #This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
 autoscaling:

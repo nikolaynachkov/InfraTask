@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
       - name: minikube
-        image: nnachkov/infratask:version1.0
+        image: nnachkov/infratask:v1.0
         env:
         - name: URLS
           valueFrom:
