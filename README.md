@@ -66,10 +66,13 @@ You will see the following output:
 
 
 6. Check the application
-Open your browser and point to [http://localhost:8090](http://localhost:8090) you will see:
+Point your browser to [http://localhost:8090](http://localhost:8090)
+You will see:
 
 
-To see the metrics point your browser to [http://localhost:8090/metrics](http://localhost:8090/metrics)
+Point your browser to [http://localhost:8090/metrics](http://localhost:8090/metrics)
+Prometheus style metrics will be displayed:
+
 
 8. Exit the application
 ```
