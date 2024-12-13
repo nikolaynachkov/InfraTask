@@ -93,61 +93,67 @@ You will a message saying that the application is shutting down.
 
 Download from: [https://docs.docker.com/desktop/setup/install/windows-install/](https://docs.docker.com/desktop/setup/install/windows-install/)
 
+
 1. Build the Docker image
 
+Ensure you are in folder InfraTask in PowerShell (where you synched the git repo and where Dockerfile is located)
+
 ```
-docker build -t nnachkov/infratask .
+docker build -t infratask:v1.0 .
 ```
 
 2. Check the application if the container is working perfectly
 
 ```
-docker run -d -p 8080:8080 --env-file ./env-file --name sample sample_external_url
+docker run -p 8090:8090 --env-file .\env_var --name temp-container infratask
 ```
-Open your browser and point to [http://localhost:8080](http://localhost:8080) you will see a text message.
-To see the metrics point your browser to [http://localhost:8080/metrics](http://localhost:8080/metrics)
+Browser  [http://localhost:8090](http://localhost:8090)
 
-3. Create new repository on **DockerHub** or your preferred docker registry.
+To see the metrics, browser to [http://localhost:8090/metrics](http://localhost:8090/metrics)
 
-4. Login to your docker registry in console
+
+
+3. Login to your docker registry (create account if not having one), create new repository on **DockerHub** and push the image.
 
 ```
 docker login
+docker tag infratask:v1.0 [USERNAME]/infratask:v1.0
+docker push [USERNAME]/infratask:v1.0
 ```
 
-5. Push the image to **DockerHub** or to your preferred docker registry
+
+## Deploy The Application Container Image On local K8s Cluster
+
+In **Kubernetes** directory, the **http_check.yaml** file contains the code for deployment of the image on a K8s cluster.
+
+For a local k8s cluster we will use minikube as a solution
+
+1. Download and install minikube, check the status.
+
+Download and install instructions: [https://minikube.sigs.k8s.io/docs/start/?arch=%2Fwindows%2Fx86-64%2Fstable%2F.exe+download](https://minikube.sigs.k8s.io/docs/start/?arch=%2Fwindows%2Fx86-64%2Fstable%2F.exe+download)
 
 ```
-docker tag sample_external_url:latest [USERNAME]/sample_external_url:latest
-docker push [USERNAME]/sample_external_url:latest
+minikube start --driver=docker
 ```
 
-## Deploy The Application Container Image On K8s Cluster
-
-The folder **k8s** contains the **sample_external_url.yaml** file which contains the code for **Kubernetes** deployment.
-
-The file contains following segments:-
-
-1. **CongfigMap** - This contains all the configuration of the application that is the environment variables.
-
-2. **Deployment** - This contains the **k8s** deployment of the application. The **POD** refers to the **configmap** for the configuration. Image used for the **POD** is **image: himadriganguly/sample_external_url**, change that according to your registry url.
-
-**Note:-** DockerHub URL [https://hub.docker.com/r/himadriganguly/sample_external_url](https://hub.docker.com/r/himadriganguly/sample_external_url)
-
-3. **Service** - This will expose the application as **ClusterIP** on **port 80** and **targetPort 8080**. Change the **targetPort** value according to the **PORT** value in **configmap**.
-
-### Deploy The Application
-
-1. Create a namespace
+![minikube start](https://github.com/user-attachments/assets/2ff1fc9c-ab9b-4f0f-894c-0142b5c167b5)
 
 ```
-kubectl create ns sample-external-url
+minikube status
 ```
 
-2. Deploy application in the above created namespace
+![minikube status](https://github.com/user-attachments/assets/6103c9f6-9049-4b6e-b145-d55e5c9368d4)
+
+2. Create a namespace where to deploy the application and not to use the default one.
 
 ```
-kubectl apply -f k8s/sample_external_url.yaml -n sample-external-url
+kubectl create ns http-check
+```
+
+3. Deploy application in the above created namespace
+
+```
+kubectl apply -f Kubernetes/http_check.yaml -n http-check
 ```
 
 3. Display all the components deployed
@@ -156,17 +162,17 @@ kubectl apply -f k8s/sample_external_url.yaml -n sample-external-url
 kubectl get all -n sample-external-url
 ```
 
-![Kubectl Get All Resources](https://raw.githubusercontent.com/himadriganguly/sample_external_url/main/screenshots/kubectl-get-all.png "Kubectl Get All Resources")
+![kubectl get all -n http-check](https://github.com/user-attachments/assets/50a2fd3e-7ca4-4ce1-a94f-4caf6a9906f2)
 
-**Note:-** Write down the **CLUSTER-IP** we would need it later.
-
-4. Check the application
+4. Check if the application is working
 
 ```
 kubectl port-forward service/sample-external-url-service 8080:80 -n sample-external-url
 ```
-Open your browser and point to [http://localhost:8080](http://localhost:8080) you will see a text message.
-To see the metrics point your browser to [http://localhost:8080/metrics](http://localhost:8080/metrics)
+
+Browse to [http://localhost:8090](http://localhost:8090)
+
+To see the metrics, browse to [http://localhost:8090/metrics](http://localhost:8090/metrics)
 
 ## Deploy Prometheus
 
