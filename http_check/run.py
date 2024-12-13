@@ -2,9 +2,9 @@ import concurrent.futures, os, requests
 from prometheus_client import Gauge, make_wsgi_app
 from wsgiref.simple_server import make_server
 
-urlState = Gauge('sample_external_url_up',
+urlState = Gauge('http_check_up',
                     'External URL state', ['url'])
-urlResp = Gauge('sample_external_url_response_ms',
+urlResp = Gauge('http_check_response_ms',
                     'External URL response in milliseconds', ['url'])
 
 class ProcessURL:
