@@ -13,23 +13,25 @@ Test URLs & metrics:-
     - **URL up/down** (1 or 0 respectively)
 
 
-### Testin application on Windows PC before conteinerization
+### Test application with PowerShell on Windows PC before conteinerization
 
 1. Download and install Python from the link
+
 **Python 3.13.1 used for testing**
 
-[https://www.python.org/downloads/release/python-3131/](https://www.python.org/downloads/release/python-3131/)
+Download from:[https://www.python.org/downloads/release/python-3131/](https://www.python.org/downloads/release/python-3131/)
 
 
-2. Clone git and enter the folder
+2. Verify installed Python version
+
+![python --version](https://github.com/user-attachments/assets/db0bf179-61a3-44dc-9fe1-099590cb3f95)
+
+
+3. Clone git and enter the local repo folder
 ```
 git clone https://github.com/nikolaynachkov/InfraTask.git
 cd \InfraTask\
 ```
-
-3. Verify installed Python version
-
-![python --version](https://github.com/user-attachments/assets/db0bf179-61a3-44dc-9fe1-099590cb3f95)
 
 4. Create and activate a virtual environment
 
@@ -38,7 +40,7 @@ python -m venv C:\temp\venv\
 C:\temp\venv\Scripts\activate.bat
 ```
 
-5. Install the required packages inside the environment
+5. Install the required packages.
 
 ```
 pip install -r .\RequiredModules\modules.txt
@@ -51,8 +53,7 @@ pip install -r .\RequiredModules\modules.txt
 [Environment]::SetEnvironmentVariable("URLS", "https://httpstat.us/503,https://httpstat.us/200", "MACHINE")
 ```
 
-
-5. Run the application
+7. Run the application
 
 ```
 python .\http_check\run.py
@@ -63,7 +64,7 @@ You will see the following output:
 ![python-run py](https://github.com/user-attachments/assets/f4a83a83-332f-4e26-89be-73bebc3ed586)
 
 
-6. Check the application
+8. Check the application
 
 Point your browser to [http://localhost:8090](http://localhost:8090)
 
@@ -81,18 +82,21 @@ Prometheus style metrics will be displayed:
 ```
 Ctrl + c
 ```
-You will see a good bye message.
+You will a message saying that the application is shutting down.
 
 <img width="400" alt="appshutdown" src="https://github.com/user-attachments/assets/7cab5f86-7fdb-4d45-b369-bfa6f91682a4" />
 
+
 ## Build Docker Image and upload it to a dockerhub repository
+
 **Docker is required**
-[https://docs.docker.com/desktop/setup/install/windows-install/](https://docs.docker.com/desktop/setup/install/windows-install/)
+
+Download from: [https://docs.docker.com/desktop/setup/install/windows-install/](https://docs.docker.com/desktop/setup/install/windows-install/)
 
 1. Build the Docker image
 
 ```
-docker build -t sample_external_url .
+docker build -t nnachkov/infratask .
 ```
 
 2. Check the application if the container is working perfectly
