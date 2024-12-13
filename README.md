@@ -1,6 +1,6 @@
 ## Projct Details and Overview
-This is a **Python** application which is collecting 2 URLs metrics and producing Prometheus format metrics at the endpoint **/metrics**. 
-The steps below outline how the application can be executed on Windows PC in a minikube K8s single node cluster locally using a docker image from a public dockerhub repository. 
+This is a **Python** application that is checking the availability and response time of external URLs and producing Prometheus format metrics at **http://appurl/metrics**. 
+The steps below outline how the application can be executed on Windows PC in a minikube K8s single node cluster, locally using a docker image from a public dockerhub repository. 
 Dockerfile exist to ease the conteinerization of the application.
 
 
@@ -15,38 +15,36 @@ Test URLs & metrics:-
 
 ## Testin application on Windows PC before conteinerization
 
-0. Download and install Python from the link
+1. Download and install Python from the link
 **Python 3.13.1 used for testing**
 
 [https://www.python.org/downloads/release/python-3131/](https://www.python.org/downloads/release/python-3131/)
 
 
-1. Clone git and enter the folder
+2. Clone git and enter the folder
 ```
 git clone https://github.com/nikolaynachkov/InfraTask.git
 cd \InfraTask\
 ```
 
-2. Verify installed Python version
+3. Verify installed Python version
 
 ![python --version](https://github.com/user-attachments/assets/db0bf179-61a3-44dc-9fe1-099590cb3f95)
 
-3. Create and activate a virtual environment
+4. Create and activate a virtual environment
 
 ```
 python -m venv C:\temp\venv\
 C:\temp\venv\Scripts\activate.bat
 ```
 
-2. Install the required packages inside the environment
+5. Install the required packages inside the environment
 
 ```
 pip install -r .\RequiredModules\modules.txt
 ```
 
-
-
-4. Set environment variables for the application
+6. Set environment variables for the application.
 ```
 [Environment]::SetEnvironmentVariable("TIMEOUT", "2", "MACHINE")
 [Environment]::SetEnvironmentVariable("PORT", "8090", "MACHINE")
@@ -66,19 +64,24 @@ You will see the following output:
 
 
 6. Check the application
+
 Point your browser to [http://localhost:8090](http://localhost:8090)
 You will see:
+
 ![applicationisrunning](https://github.com/user-attachments/assets/91059856-aa61-4fd5-a5cb-a4b637223c69)
 
 Point your browser to [http://localhost:8090/metrics](http://localhost:8090/metrics)
 Prometheus style metrics will be displayed:
+
 ![Prometheus_metrics](https://github.com/user-attachments/assets/f04ab2f0-b78a-4406-b552-ecd47724c27f)
 
-8. Exit the application
+7. Exit the application in powershell
 ```
 Ctrl + c
 ```
 You will see a good bye message.
+
+<img width="400" alt="appshutdown" src="https://github.com/user-attachments/assets/7cab5f86-7fdb-4d45-b369-bfa6f91682a4" />
 
 ## Building The Container Image For Production
 **Docker is required**
