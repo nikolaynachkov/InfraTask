@@ -64,7 +64,7 @@ You will see the following output:
 ![python-run py](https://github.com/user-attachments/assets/f4a83a83-332f-4e26-89be-73bebc3ed586)
 
 
-8. Check the application
+8. Check if the application is working
 
 Point your browser to [http://localhost:8090](http://localhost:8090)
 
@@ -74,11 +74,11 @@ You will see:
 
 Point your browser to [http://localhost:8090/metrics](http://localhost:8090/metrics)
 
-Prometheus style metrics will be displayed:
+The metrics we have set will be displayed:
 
 ![Prometheus_metrics](https://github.com/user-attachments/assets/f04ab2f0-b78a-4406-b552-ecd47724c27f)
 
-7. Exit the application in powershell
+9. Exit the application in powershell
 
 ```
 Ctrl + c
@@ -146,19 +146,25 @@ minikube status
 
 ![minikube status](https://github.com/user-attachments/assets/6103c9f6-9049-4b6e-b145-d55e5c9368d4)
 
-2. Create a namespace where to deploy the application and not to use the default one.
+2. Download the respective Kubernetes binaries and save them in a desired location. (Example C:\Kubernetes)
+
+Download from: [https://kubernetes.io/releases/download/#binaries](https://kubernetes.io/releases/download/#binaries)
+
+Once you save the binaries, add the path to the Kubernetes binaries into the SYSTEM wide PATH environment variable.
+
+3. Create a namespace where to deploy the application and not to use the default one.
 
 ```
 kubectl create ns http-check
 ```
 
-3. Deploy application in the above created namespace
+4. Deploy application in the above created namespace
 
 ```
 kubectl apply -f Kubernetes/http_check.yaml -n http-check
 ```
 
-3. Display all the components deployed
+5. Display all the components deployed
 
 ```
 kubectl get all -n http-check
@@ -166,7 +172,7 @@ kubectl get all -n http-check
 
 ![kubectl get all -n http-check](https://github.com/user-attachments/assets/50a2fd3e-7ca4-4ce1-a94f-4caf6a9906f2)
 
-4. Check if the application is working
+6. Check if the application is working
 
 ```
 kubectl port-forward service/http-check-service 8090:8090 -n http-check
@@ -177,7 +183,7 @@ Browse to [http://localhost:8090](http://localhost:8090)
 To see the metrics, browse to [http://localhost:8090/metrics](http://localhost:8090/metrics)
 
 
-6. When you verify the image is working, stop kubectl port-forward and delete the newly created namespace.
+7. When you verify the image is working, stop kubectl port-forward and delete the newly created namespace.
 
 ```
 Ctrl + c
@@ -217,7 +223,7 @@ helm uninstall initial .\httpcheckapp --namespace http-check-helmchart
 kubectl delete ns http-check-helmchart
 ```
 
-6. Delete minikube cluster from local system
+5. Delete minikube cluster from local system
 
 ```
 minikube delete
