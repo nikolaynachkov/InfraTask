@@ -46,7 +46,7 @@ C:\temp\venv\Scripts\activate.bat
 pip install -r .\RequiredModules\modules.txt
 ```
 
-6. Set environment variables for the application.
+6. Set environment variables for the application from within PowerShell.
 ```
 [Environment]::SetEnvironmentVariable("TIMEOUT", "2", "MACHINE")
 [Environment]::SetEnvironmentVariable("PORT", "8090", "MACHINE")
